@@ -1,8 +1,13 @@
 -- Seed the random number generator. Lua seems to be weird about this,
 -- so also generate a few random numbers to kick it into gear.
-math.randomseed(os.clock() ^ 5);
-for i = 1, 10 do
-    math.random(10000, 65000);
+function seed_rng()
+    if not rng_seeded then
+        math.randomseed(os.clock() ^ 5);
+        for i = 1, 10 do
+            math.random(10000, 65000);
+        end
+        rng_seeded = true;
+    end
 end
 
 -- Find the highest version in common between two sets of versions.

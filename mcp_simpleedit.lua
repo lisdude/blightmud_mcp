@@ -37,7 +37,7 @@ end
 function monitor_changes()
     for data_tag, data in pairs(currently_editing) do
         local last_modified = last_modified(data[2]);
-        if last_modified ~= data[3] then
+        if data[3] ~= 0 and last_modified ~= data[3] then
             currently_editing[data_tag][3] = last_modified;
             simpleedit_send(data);
         end
@@ -56,7 +56,7 @@ function simpleedit_end(data)
     edit_data[1]:close();
     currently_editing[data[2]][3] = last_modified(edit_data[2]);
     currently_editing[data[2]][1] = nil;
-    os.execute("tmux new-window -n \"" .. edit_data[5] .. "\" vim -c \"set syntax=moo\" " .. edit_data[2]);
+    os.execute("tmux new-window -n " .. edit_data[5] .. " nvim -c \"set syntax=moo\" " .. edit_data[2]);
 end
 
 -- As MCP data is received, write it to the file we want to edit.
