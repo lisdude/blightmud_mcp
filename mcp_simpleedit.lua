@@ -75,7 +75,6 @@ function simpleedit_add_content(data)
 end
 
 -- Create a file to be edited.
--- TODO: Use the name provided by MCP. But we have to sanitize it to become a file name.
 function simpleedit_begin(data)
     if data[2] ~= auth_key then
         if debug_mcp then
@@ -88,6 +87,10 @@ function simpleedit_begin(data)
     local data_type = data[5];
     local content = data[6];
     local data_tag = data[7];
+    -- Sanitize name by escaping non-alphanumeric characters. This is necessary
+    -- because we pass it to tmux new-window and special characters could make
+    -- a messy and/or dangerous os.execute...
+    name = name:gsub("%W", "\\%1");
     file_name = tostring(math.random(0, 9223372036854775807)) .. ".moo";
     while file_exists(file_name) do
         -- This seems extraordinarily unlikely!
