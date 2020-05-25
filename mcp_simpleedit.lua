@@ -26,7 +26,7 @@ function simpleedit_send(data)
     local data_type = data[6];
     local content = data[7];
     local data_tag = math.random(10000, 999999);
-    blight:send("#$#dns-org-mud-moo-simpleedit-set " .. auth_key .. " reference: \"" .. reference .. "\" type: \"" .. data_type .. "\" content*: \"" .. content .. "\" _data-tag: " .. data_tag);
+    blight:send("#$#dns-org-mud-moo-simpleedit-set " .. auth_key .. " reference: " .. reference .. " type: " .. data_type .. " content*: " .. content .. " _data-tag: " .. data_tag);
     for line in io.lines(file_path) do
         blight:send("#$#* " .. data_tag .. " content: " .. line);
     end
