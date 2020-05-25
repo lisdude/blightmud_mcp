@@ -33,5 +33,10 @@ end
 -- Return a file's last modification time
 function last_modified(file)
     local f = io.popen("gstat -c %Y " .. file);
-    return tonumber(f:read());
+    local last_mod = f:read();
+    f:close();
+    if last_mod == nil then
+        blight:output(">>> Couldn't get last modified date for " .. file);
+    end
+    return tonumber(last_mod);
 end
