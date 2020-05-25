@@ -19,12 +19,13 @@ local base_path = "mcp/simpleedit/";
 local currently_editing = {};
 
 -- Send any changes back to the MOO
-function simpleedit_send(data_tag, data)
+function simpleedit_send(data)
     local file_path = data[2]
     local reference = data[4];
     local name = data[5];
     local data_type = data[6];
     local content = data[7];
+    local data_tag = math.random(10000, 999999);
     blight:send("#$#dns-org-mud-moo-simpleedit-set " .. auth_key .. " reference: \"" .. reference .. "\" type: \"" .. data_type .. "\" content*: \"" .. content .. "\" _data-tag: " .. data_tag);
     for line in io.lines(file_path) do
         blight:send("#$#* " .. data_tag .. " content: " .. line);
@@ -38,7 +39,7 @@ function monitor_changes()
         local last_modified = last_modified(data[2]);
         if last_modified ~= data[3] then
             currently_editing[data_tag][3] = last_modified;
-            simpleedit_send(data_tag, data);
+            simpleedit_send(data);
         end
     end
 end
