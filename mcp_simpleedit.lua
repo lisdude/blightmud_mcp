@@ -37,7 +37,10 @@ end
 function monitor_changes()
     for data_tag, data in pairs(currently_editing) do
         local last_modified = last_modified(data[2]);
-        if data[3] ~= 0 and last_modified ~= data[3] then
+        if last_modified == nil then
+            -- The file has likely been deleted. Forget about it.
+            currently_editing[data_tag] = nil;
+        elseif data[3] ~= 0 and last_modified ~= data[3] then
             currently_editing[data_tag][3] = last_modified;
             simpleedit_send(data);
         end

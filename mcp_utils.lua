@@ -42,6 +42,8 @@ function last_modified(file)
     f:close();
     if last_mod == nil then
         blight:output(">>> Couldn't get last modified date for " .. file);
+        return nil;
+    else
+        return tonumber(last_mod);
     end
-    return tonumber(last_mod);
 end
