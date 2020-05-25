@@ -34,8 +34,10 @@ end
 
 -- Monitor our currently_editing files for changes.
 function monitor_changes()
-    for data_tag, data in currently_editing do
-        if last_modified(data[2]) ~= data[3] then
+    for data_tag, data in pairs(currently_editing) do
+        local last_modified = last_modified(data[2]);
+        if last_modified ~= data[3] then
+            currently_editing[data_tag][3] = last_modified;
             simpleedit_send(data_tag, data);
         end
     end
@@ -102,7 +104,7 @@ function init_simpleedit()
     blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin);
     blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content);
     blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end);
-    blight:add_timer(1, 20, monitor_changes);
+    blight:add_timer(1, 0, monitor_changes);
 end
 
 supported_packages["dns-org-mud-moo-simpleedit"] = {init_simpleedit, 1.0, 1.0};
