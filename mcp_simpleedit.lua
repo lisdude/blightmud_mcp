@@ -55,7 +55,7 @@ function simpleedit_end(data)
     edit_data[1]:close();
     currently_editing[data[2]][3] = last_modified(edit_data[2]);
     currently_editing[data[2]][1] = nil;
-    os.execute("tmux new-window vim " .. edit_data[2]);
+    os.execute("tmux new-window -n \"" .. edit_data[5] .. "\" vim -c \"set syntax=moo\" " .. edit_data[2]);
 end
 
 -- As MCP data is received, write it to the file we want to edit.
@@ -67,7 +67,6 @@ function simpleedit_add_content(data)
         end
         return;
     end
-    blight:output(tostring(edit_data[1]));
     edit_data[1]:write(data[3] .. "\n");
 end
 
@@ -100,7 +99,7 @@ function simpleedit_begin(data)
 end
 
 function init_simpleedit()
-    os.execute("rm " .. base_path .. "*.moo");
+    os.execute("rm -f " .. base_path .. "*.moo");
     blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin);
     blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content);
     blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end);
