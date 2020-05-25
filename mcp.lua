@@ -6,7 +6,7 @@
 --
 min_version = 2.1;
 max_version = 2.1;
-debug_mcp = true;
+debug_mcp = false;
 
 advertisement_regex = "^#\\$#mcp version: (.+) to: (.+)$";
 negotiate_can_regex = "^#\\$#mcp-negotiate-can (.+) package: (.+) min-version: (.+) max-version: (.+)$";
