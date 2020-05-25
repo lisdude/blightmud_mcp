@@ -17,9 +17,21 @@ end
 -- Generate an MCP authentication key. As it's designed to prevent spoofing,
 -- and not for security, this key is 20 random digits.
 function generate_auth_key()
-   	local res = "";
-	for i = 1, 20 do
-		res = res .. math.random(0, 9);
+   	local result = "";
+	for x = 1, 20 do
+		result = result .. math.random(0, 9);
 	end
-	return res;
+	return result;
+end
+
+-- Check if a file exists (there isn't a native way?)
+function file_exists(name)
+   local f = io.open(name, "r");
+   return f ~= nil and io.close(f);
+end
+
+-- Return a file's last modification time
+function last_modified(file)
+    local f = io.popen("gstat -c %Y " .. file);
+    return tonumber(f:read());
 end

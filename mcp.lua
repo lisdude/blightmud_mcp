@@ -6,7 +6,7 @@
 --
 min_version = 2.1;
 max_version = 2.1;
-debug_mcp = false;
+debug_mcp = true;
 
 advertisement_regex = "^#\\$#mcp version: (.+) to: (.+)$";
 negotiate_can_regex = "^#\\$#mcp-negotiate-can (.+) package: (.+) min-version: (.+) max-version: (.+)$";
@@ -14,9 +14,10 @@ negotiate_can_regex = "^#\\$#mcp-negotiate-can (.+) package: (.+) min-version: (
 supported_packages = {};   -- Packages that the client supports.
 negotiated_packages = {};  -- Packages that both the client and server support.
 
-blight:load("mcp/mcp_utils.lua");     -- useful utility functions
-blight:load("mcp/mcp_negotiate.lua"); -- mcp-negotiate package
-blight:load("mcp/mcp_client.lua");    -- dns-com-vmoo-client package
+blight:load("mcp/mcp_utils.lua");      -- useful utility functions
+blight:load("mcp/mcp_negotiate.lua");  -- mcp-negotiate package
+blight:load("mcp/mcp_client.lua");     -- dns-com-vmoo-client package
+blight:load("mcp/mcp_simpleedit.lua"); -- dns-org-mud-moo-simpleedit package
 
 -- Begin registration with the server. This process sends the authentication key
 -- and negotiates what packages are available. This is a bit odd because we have to
