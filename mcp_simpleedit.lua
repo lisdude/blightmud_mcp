@@ -43,7 +43,7 @@ end
 
 -- When all of the MCP data has been received, close the file and open Vim!
 function simpleedit_end(data)
-    edit_data = currently_editing[data[2]];
+    local edit_data = currently_editing[data[2]];
     if edit_data == nil then
         if debug_mcp then
             blight:output(">>> Simpleedit end had invalid data-tag");
@@ -58,7 +58,7 @@ end
 
 -- As MCP data is received, write it to the file we want to edit.
 function simpleedit_add_content(data)
-    edit_data = currently_editing[data[2]];
+    local edit_data = currently_editing[data[2]];
     if edit_data == nil then
         if debug_mcp then
             blight:output(">>> Simpleedit content had invalid data-tag");
@@ -89,7 +89,7 @@ function simpleedit_begin(data)
         file_name = tostring(math.random(0, 9223372036854775807)) .. ".moo";
     end
     local path = base_path .. file_name;
-    handle = io.open(path, "w");
+    local handle = io.open(path, "w");
     if handle == nil then
         blight:output("Couldn't open file " .. path .. " for editing!");
     else
