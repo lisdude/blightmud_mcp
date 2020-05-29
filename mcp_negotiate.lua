@@ -43,9 +43,9 @@ end
 function init_mcp_negotiate()
     blight:add_trigger(negotiate_end_regex, { gag = true }, function () end); -- We don't actually care about this one.
     for package, data in pairs(supported_packages) do
-        blight:send("#$#mcp-negotiate-can " .. auth_key .. " package: " .. package .. " min-version: " .. data[2] .. " max-version: " .. data[3]);
+        blight:send("#$#mcp-negotiate-can " .. auth_key .. " package: " .. package .. " min-version: " .. data[2] .. " max-version: " .. data[3], gag);
     end
-    blight:send("#$#mcp-negotiate-end " .. auth_key);
+    blight:send("#$#mcp-negotiate-end " .. auth_key, gag);
 end
 
 supported_packages["mcp-negotiate"] = {init_mcp_negotiate, 1.0, 2.0};

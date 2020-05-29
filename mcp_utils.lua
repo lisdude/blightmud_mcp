@@ -1,3 +1,9 @@
+if debug_mcp then
+    gag = {}
+else
+    gag = {gag=true, skip_log=true};  -- Default blight:send options.
+end
+
 -- Seed the random number generator. Lua seems to be weird about this,
 -- so also generate a few random numbers to kick it into gear.
 function seed_rng()

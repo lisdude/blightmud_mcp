@@ -26,7 +26,7 @@ blight:load("mcp/mcp_simpleedit.lua"); -- dns-org-mud-moo-simpleedit package
 function mcp_register(version)
     seed_rng();
     auth_key = generate_auth_key();
-    blight:send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version);
+    blight:send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version, gag);
     blight:add_trigger(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can);
 end
 

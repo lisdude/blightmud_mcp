@@ -7,7 +7,7 @@
 -- Author: lisdude <lisdude@lisdude.com>
 --
 function init_client()
-    blight:send("#$#dns-com-vmoo-client-info " .. auth_key .. " name: \"Blightmud\" text-version: \"0.1.0\" internal-version: \"0\"");
+    blight:send("#$#dns-com-vmoo-client-info " .. auth_key .. " name: \"Blightmud\" text-version: \"0.1.0\" internal-version: \"0\"", gag);
 end
 
 supported_packages["dns-com-vmoo-client"] = {init_client, 1.0, 1.0};
