@@ -6,15 +6,9 @@
 --
 
 --- Configuration ---
--- The path where editor files will be created:
 simpleedit_path = "mcp/simpleedit/";
--- The command executed to launch your editor:
-edit_command = "nvim -c \"set syntax=moo\""
--- Your 'stat' command. This will be 'stat' on most sane systems,
--- but macOS users will probably need the Homebrew 'gstat' command.
+edit_command = "vim -c \"set syntax=moo\""
 stat_command = "stat"
--- Don't hide any out-of-band MCP communication and show additional
--- debugging messages.
 debug_mcp = false;
 ---------------------
 
