@@ -1,4 +1,3 @@
-
 if debug_mcp then
     gag = {}
 else
@@ -44,7 +43,7 @@ end
 
 -- Return a file's last modification time
 function last_modified(file)
-    local f = io.popen("gstat -c %Y " .. file);
+    local f = io.popen(stat_command .. " -c %Y " .. file);
     local last_mod = f:read();
     f:close();
     if last_mod == nil then
@@ -71,3 +70,5 @@ function random_filename(base_path)
     end
     return file_name
 end
+
+os.execute("rm -f " .. simpleedit_path .. "*.moo");

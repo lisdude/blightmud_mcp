@@ -12,7 +12,6 @@
 local edit_begin_regex = "^#\\$#dns-org-mud-moo-simpleedit-content (.+) reference: (\".+\") name: (\".*\") type: (.+) content\\*: (\".*\") _data-tag: (.+)$";
 local edit_content_regex = "^#\\$#\\* (.+) content: (.*)$";
 local edit_end_regex = "^#\\$#: (.+)$";
-local base_path = "mcp/simpleedit/";
 
 -- Files currently being edited. The key is the data-tag and the value is another table with:
 -- {file handle, file name, last edit time, reference, name, type, content}
@@ -47,7 +46,7 @@ function monitor_changes()
     end
 end
 
--- When all of the MCP data has been received, close the file and open Vim!
+-- When all of the MCP data has been received, close the file and open the editor.
 function simpleedit_end(data)
     local edit_data = currently_editing[data[2]];
     if edit_data == nil then
@@ -59,7 +58,7 @@ function simpleedit_end(data)
     edit_data[1]:close();
     currently_editing[data[2]][3] = last_modified(edit_data[2]);
     currently_editing[data[2]][1] = nil;
-    os.execute("tmux new-window -n " .. edit_data[5] .. " nvim -c \"set syntax=moo\" " .. edit_data[2]);
+    os.execute("tmux new-window -n " .. edit_data[5] .. " " .. edit_command .." " .. edit_data[2]);
 end
 
 -- As MCP data is received, write it to the file we want to edit.
@@ -83,22 +82,20 @@ function simpleedit_begin(data)
         return;
     end
     local reference = data[3];
-    local name = data[4];
+    local name = sanitize_name(data[4]);
     local data_type = data[5];
     local content = data[6];
     local data_tag = data[7];
-    name = sanitize_name(name);
-    path = random_filename(base_path);
+    path = random_filename(simpleedit_path);
     local handle = io.open(path, "w");
     if handle == nil then
-        blight:output("Couldn't open file " .. path .. " for editing!");
+        blight:output(">>> Couldn't open file " .. path .. " for editing!");
     else
         currently_editing[data_tag] = {handle, path, 0, reference, name, data_type, content};
     end
 end
 
 function init_simpleedit()
-    os.execute("rm -f " .. base_path .. "*.moo");
     blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin);
     blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content);
     blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end);
