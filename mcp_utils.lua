@@ -1,3 +1,4 @@
+
 if debug_mcp then
     gag = {}
 else
@@ -52,4 +53,21 @@ function last_modified(file)
     else
         return tonumber(last_mod);
     end
+end
+
+-- Sanitize name by escaping non-alphanumeric characters. This is necessary
+-- because we pass it to tmux new-window and special characters could make
+-- a messy and/or dangerous os.execute...
+function sanitize_name(name)
+    return name:gsub("%W", "\\%1");
+end
+
+-- Return a random file name
+function random_filename(base_path)
+    file_name = base_path .. tostring(math.random(0, 9223372036854775807)) .. ".moo";
+    while file_exists(file_name) do
+        -- This seems extraordinarily unlikely!
+        file_name = base_path .. tostring(math.random(0, 9223372036854775807)) .. ".moo";
+    end
+    return file_name
 end

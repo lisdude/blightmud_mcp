@@ -87,16 +87,8 @@ function simpleedit_begin(data)
     local data_type = data[5];
     local content = data[6];
     local data_tag = data[7];
-    -- Sanitize name by escaping non-alphanumeric characters. This is necessary
-    -- because we pass it to tmux new-window and special characters could make
-    -- a messy and/or dangerous os.execute...
-    name = name:gsub("%W", "\\%1");
-    file_name = tostring(math.random(0, 9223372036854775807)) .. ".moo";
-    while file_exists(file_name) do
-        -- This seems extraordinarily unlikely!
-        file_name = tostring(math.random(0, 9223372036854775807)) .. ".moo";
-    end
-    local path = base_path .. file_name;
+    name = sanitize_name(name);
+    path = random_filename(base_path);
     local handle = io.open(path, "w");
     if handle == nil then
         blight:output("Couldn't open file " .. path .. " for editing!");
