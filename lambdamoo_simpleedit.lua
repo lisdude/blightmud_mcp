@@ -76,10 +76,14 @@ function lambdamoo_simpleedit_begin(data)
     current_capture = {editing_trigger, path, handle, nil}
 end
 
-if debug_mcp then
-    blight:output(">>> Initialized LambdaMOO simpleedit")
+function init_lambdamoo_simpleedit()
+    if not auth_key then
+        blight:add_trigger(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin);
+        blight:add_timer(1, 0, lambdamoo_monitor_changes)
+        if debug_mcp then
+            blight:output(">>> Initialized LambdaMOO local edit protocol")
+        end
+    end
 end
-blight:add_trigger(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin);
-blight:add_timer(1, 0, lambdamoo_monitor_changes)
 
-
+blight:add_trigger(lambdamoo_connect_string, { gag = not debug_mcp }, init_lambdamoo_simpleedit);

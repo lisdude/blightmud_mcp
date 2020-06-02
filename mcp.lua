@@ -9,6 +9,7 @@
 simpleedit_path = "mcp/simpleedit/";
 edit_command = "vim -c \"set syntax=moo\""
 stat_command = "stat"
+lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"
 debug_mcp = false;
 ---------------------
 

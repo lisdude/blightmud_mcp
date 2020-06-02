@@ -23,9 +23,10 @@ Some packages add custom commands:
 
 ## Configuration
 You can customize some settings inside the `mcp.lua` file:
-| Setting          | Effect                                                                        |
-| -----------------|-------------------------------------------------------------------------------|
-| simpleedit_path  | The path where editor files are created.                                      |
-| edit_command     | The command executed to launch your editor.                                   |
-| stat_command     | Your 'stat' command. macOS users should use the Homebrew `gstat` command.     |
-| debug_mcp        | Don't hide out-of-band MCP communication. Show additional debugging messages. |
+| Setting                  | Effect                                                                                                                      |
+| -------------------------|-----------------------------------------------------------------------------------------------------------------------------|
+| simpleedit_path          | The path where editor files are created.                                                                                    |
+| edit_command             | The command executed to launch your editor.                                                                                 |
+| stat_command             | Your 'stat' command. macOS users should use the Homebrew `gstat` command.                                                   |
+| lambdamoo_connect_string | The string used to identify a MOO and initialize the LambdaMOO local edit protocol. (Only applies to MOOs without MCP 2.1.) |
+| debug_mcp                | Don't hide out-of-band MCP communication. Show additional debugging messages. |
