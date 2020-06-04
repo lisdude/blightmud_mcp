@@ -6,7 +6,7 @@
 -- Author: lisdude <lisdude@lisdude.com>
 --
 
-local status_trigger = "#\\$#dns-com-awns-status (.+) text: (.+)"
+local status_trigger = "^#\\$#dns-com-awns-status (.+) text: (.+)$"
 
 function update_status(data)
     blight:status_line(0, data[3])
