@@ -5,6 +5,7 @@ This is a collection of Lua scripts for Blightmud that implement the [MUD Client
 It includes the following MCP packages:
 - dns-com-vmoo-client (Report client name and version. Also automatically set @linelength.)
 - dns-org-mud-moo-simpleedit (Allow editing of MOO verbs and lists in an external editor.)
+- dns-com-awns-status (Write arbitrary text to the client status bar)
 
 In addition, for MOOs that don't support MCP, these scripts include support for the early LambdaMOO local editing protocol.
 
