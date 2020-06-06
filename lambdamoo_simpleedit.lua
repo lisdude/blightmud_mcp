@@ -77,8 +77,8 @@ function lambdamoo_simpleedit_begin(data)
 end
 
 function init_lambdamoo_simpleedit()
-    if not auth_key then
-        blight:add_trigger(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
+    if not auth_key and lambdamoo_trigger == nil then
+        lambdamoo_trigger = blight:add_trigger(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
         blight:add_timer(1, 0, lambdamoo_monitor_changes)
         if debug_mcp then
             blight:output(">>> Initialized LambdaMOO local edit protocol")

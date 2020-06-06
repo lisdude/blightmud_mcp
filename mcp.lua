@@ -7,7 +7,7 @@
 
 --- Configuration ---
 simpleedit_path = "mcp/simpleedit/"
-edit_command = "nvim -c \"set syntax=moo\""
+edit_command = "vim -c \"set syntax=moo\""
 stat_command = "stat"
 lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"
 debug_mcp = false
@@ -37,7 +37,9 @@ function mcp_register(version)
     seed_rng()
     auth_key = generate_auth_key()
     blight:send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version, gag)
-    blight:add_trigger(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can)
+    if negotiate_trigger == nil then
+        negotiate_trigger = blight:add_trigger(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can)
+    end
 end
 
 -- The callback function for the MCP advertisement message. This will determine

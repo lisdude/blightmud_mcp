@@ -96,10 +96,18 @@ function simpleedit_begin(data)
 end
 
 function init_simpleedit()
-    blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
-    blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
-    blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
-    blight:add_timer(1, 0, monitor_changes)
+    if simpleedit_trigger ~= nil then
+        -- Probably a /reconnect. Forget what we know.
+        currently_editing = {}
+    else
+        simpleedit_trigger = blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
+        blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
+        blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
+        blight:add_timer(1, 0, monitor_changes)
+        if debug_mcp then
+            blight:output(">>> Initialized MCP simpleedit")
+        end
+    end
 end
 
 supported_packages["dns-org-mud-moo-simpleedit"] = {init_simpleedit, 1.0, 1.0}

@@ -13,7 +13,9 @@ function update_status(data)
 end
 
 function init_status()
-    blight:add_trigger(status_trigger, { gag = not debug_mcp }, update_status)
+    if status_trigger == nil then
+        status_trigger = blight:add_trigger(status_trigger, { gag = not debug_mcp }, update_status)
+    end
 end
 
 supported_packages["dns-com-awns-status"] = {init_status, 1.0, 1.0}
