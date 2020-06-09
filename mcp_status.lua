@@ -6,15 +6,21 @@
 -- Author: lisdude <lisdude@lisdude.com>
 --
 
-local status_trigger = "^#\\$#dns-com-awns-status (.+) text: (.+)$"
+local status_trigger = "^#\\$#dns-com-awns-status (.+) text: \"(.+)\"$"
 
 function update_status(data)
-    blight:status_line(0, data[3])
+    if data[2] ~= auth_key then
+        if debug_mcp then
+            blight:output(">>> dns-com-awns-status authorization key didn't match")
+        end
+    else
+       blight:status_line(0, data[3])
+    end
 end
 
 function init_status()
-    if status_trigger == nil then
-        status_trigger = blight:add_trigger(status_trigger, { gag = not debug_mcp }, update_status)
+    if status_init_trigger == nil then
+        status_init_trigger = blight:add_trigger(status_trigger, { gag = not debug_mcp }, update_status)
     end
 end
 
