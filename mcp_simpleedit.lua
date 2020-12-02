@@ -25,11 +25,11 @@ function simpleedit_send(data)
     local data_type = data[6]
     local content = data[7]
     local data_tag = math.random(10000, 999999)
-    blight:send("#$#dns-org-mud-moo-simpleedit-set " .. auth_key .. " reference: " .. reference .. " type: " .. data_type .. " content*: " .. content .. " _data-tag: " .. data_tag, gag)
+    mud.send("#$#dns-org-mud-moo-simpleedit-set " .. auth_key .. " reference: " .. reference .. " type: " .. data_type .. " content*: " .. content .. " _data-tag: " .. data_tag, gag)
     for line in io.lines(file_path) do
-        blight:send("#$#* " .. data_tag .. " content: " .. line, gag)
+        mud.send("#$#* " .. data_tag .. " content: " .. line, gag)
     end
-    blight:send("#$#: " .. data_tag, gag)
+    mud.send("#$#: " .. data_tag, gag)
 end
 
 -- Monitor our currently_editing files for changes.
@@ -58,7 +58,7 @@ function simpleedit_end(data)
     edit_data[1]:close()
     currently_editing[data[2]][3] = last_modified(edit_data[2])
     currently_editing[data[2]][1] = nil
-    os.execute("tmux new-window -n " .. edit_data[5] .. " " .. edit_command .." " .. edit_data[2])
+    os.execute(edit_command .." " .. edit_data[2])
 end
 
 -- As MCP data is received, write it to the file we want to edit.
@@ -100,9 +100,9 @@ function init_simpleedit()
         -- Probably a /reconnect. Forget what we know.
         currently_editing = {}
     else
-        simpleedit_trigger = blight:add_trigger(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
-        blight:add_trigger(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
-        blight:add_trigger(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
+        simpleedit_trigger = trigger.add(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
+        trigger.add(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
+        trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
         blight:add_timer(1, 0, monitor_changes)
         if debug_mcp then
             blight:output(">>> Initialized MCP simpleedit")

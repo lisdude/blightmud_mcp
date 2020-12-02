@@ -1,7 +1,7 @@
 if debug_mcp then
     gag = {}
 else
-    gag = {gag=true, skip_log=true}  -- Default blight:send options.
+    gag = {gag=true, skip_log=true}  -- Default mud.send options.
 end
 
 -- Seed the random number generator. Lua seems to be weird about this,

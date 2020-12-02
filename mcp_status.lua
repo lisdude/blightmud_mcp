@@ -20,7 +20,7 @@ end
 
 function init_status()
     if status_init_trigger == nil then
-        status_init_trigger = blight:add_trigger(status_trigger, { gag = not debug_mcp }, update_status)
+        status_init_trigger = trigger.add(status_trigger, { gag = not debug_mcp }, update_status)
     end
 end
 

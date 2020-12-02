@@ -13,11 +13,11 @@ local current_capture = {}
 
 -- Send changes back to the MOO with the upload command
 function lambdamoo_send(path, data)
-    blight:send(data[3])
+    mud.send(data[3])
     for line in io.lines(path) do
-        blight:send(line, gag)
+        mud.send(line, gag)
     end
-    blight:send(".", gag)
+    mud.send(".", gag)
 end
 
 -- Monitor the currently_editing files for changes.
@@ -47,10 +47,10 @@ function lambdamoo_simpleedit_capture(data)
         -- End of the capture.
         local path = current_capture[2]
         current_capture[3]:close()
-        blight:remove_trigger(current_capture[1])
+        trigger.remove(current_capture[1].id)
         currently_editing[path][1] = last_modified(path)
         local edit_data = currently_editing[path]
-        os.execute("tmux new-window -n " .. edit_data[2] .. " " .. edit_command .. " " .. path)
+        os.execute(edit_command .. " " .. path)
         current_capture = {}
     else
         if data[1].sub(1, 2) == ".." then
@@ -72,13 +72,13 @@ function lambdamoo_simpleedit_begin(data)
     else
         currently_editing[path] = {0, name, command}
     end
-    local editing_trigger = blight:add_trigger(".+", { gag = not debug_mcp }, lambdamoo_simpleedit_capture)
+    local editing_trigger = trigger.add(".+", { gag = not debug_mcp }, lambdamoo_simpleedit_capture)
     current_capture = {editing_trigger, path, handle, nil}
 end
 
 function init_lambdamoo_simpleedit()
     if not auth_key and lambdamoo_trigger == nil then
-        lambdamoo_trigger = blight:add_trigger(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
+        lambdamoo_trigger = trigger.add(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
         blight:add_timer(1, 0, lambdamoo_monitor_changes)
         if debug_mcp then
             blight:output(">>> Initialized LambdaMOO local edit protocol")
@@ -86,4 +86,4 @@ function init_lambdamoo_simpleedit()
     end
 end
 
-blight:add_trigger(lambdamoo_connect_string, { gag = not debug_mcp }, init_lambdamoo_simpleedit)
+trigger.add(lambdamoo_connect_string, { gag = not debug_mcp }, init_lambdamoo_simpleedit)
