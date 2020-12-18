@@ -103,7 +103,7 @@ function init_simpleedit()
         simpleedit_trigger = trigger.add(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
         trigger.add(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
         trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
-        blight:add_timer(1, 0, monitor_changes)
+        timer.add(1, 0, monitor_changes)
         if debug_mcp then
             blight:output(">>> Initialized MCP simpleedit")
         end
