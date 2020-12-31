@@ -14,7 +14,7 @@ function update_status(data)
             blight:output(">>> dns-com-awns-status authorization key didn't match")
         end
     else
-       blight:status_line(0, data[3])
+       blight.status_line(0, data[3])
     end
 end
 
