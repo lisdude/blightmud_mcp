@@ -51,7 +51,7 @@ function simpleedit_end(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
         if debug_mcp then
-            blight:output(">>> Simpleedit end had invalid data-tag")
+            blight.output(">>> Simpleedit end had invalid data-tag")
         end
         return
     end
@@ -66,7 +66,7 @@ function simpleedit_add_content(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
         if debug_mcp then
-            blight:output(">>> Simpleedit content had invalid data-tag")
+            blight.output(">>> Simpleedit content had invalid data-tag")
         end
         return
     end
@@ -77,7 +77,7 @@ end
 function simpleedit_begin(data)
     if data[2] ~= auth_key then
         if debug_mcp then
-            blight:output(">>> Simpleedit authorization key didn't match")
+            blight.output(">>> Simpleedit authorization key didn't match")
         end
         return
     end
@@ -89,7 +89,7 @@ function simpleedit_begin(data)
     path = random_filename(simpleedit_path)
     local handle = io.open(path, "w")
     if handle == nil then
-        blight:output(">>> Couldn't open file " .. path .. " for editing!")
+        blight.output(">>> Couldn't open file " .. path .. " for editing!")
     else
         currently_editing[data_tag] = {handle, path, 0, reference, name, data_type, content}
     end
@@ -105,7 +105,7 @@ function init_simpleedit()
         trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
         timer.add(1, 0, monitor_changes)
         if debug_mcp then
-            blight:output(">>> Initialized MCP simpleedit")
+            blight.output(">>> Initialized MCP simpleedit")
         end
     end
 end

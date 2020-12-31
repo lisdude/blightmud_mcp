@@ -68,7 +68,7 @@ function lambdamoo_simpleedit_begin(data)
     path = random_filename(simpleedit_path)
     local handle = io.open(path, "w")
     if handle == nil then
-        blight:output(">>> Couldn't open file " .. path .. " for editing!")
+        blight.output(">>> Couldn't open file " .. path .. " for editing!")
     else
         currently_editing[path] = {0, name, command}
     end
@@ -81,7 +81,7 @@ function init_lambdamoo_simpleedit()
         lambdamoo_trigger = trigger.add(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
         timer.add(1, 0, lambdamoo_monitor_changes)
         if debug_mcp then
-            blight:output(">>> Initialized LambdaMOO local edit protocol")
+            blight.output(">>> Initialized LambdaMOO local edit protocol")
         end
     end
 end

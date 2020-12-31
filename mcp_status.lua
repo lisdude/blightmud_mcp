@@ -11,7 +11,7 @@ local status_trigger = "^#\\$#dns-com-awns-status (.+) text: \"(.+)\"$"
 function update_status(data)
     if data[2] ~= auth_key then
         if debug_mcp then
-            blight:output(">>> dns-com-awns-status authorization key didn't match")
+            blight.output(">>> dns-com-awns-status authorization key didn't match")
         end
     else
        blight.status_line(0, data[3])
