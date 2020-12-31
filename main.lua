@@ -6,12 +6,11 @@
 --
 
 --- Configuration ---
-simpleedit_path = "mcp/simpleedit/"
+simpleedit_path = "simpleedit/"
 edit_command = "vim -c \"set syntax=moo\""
 stat_command = "stat"
 lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"
 debug_mcp = false
----------------------
 
 min_version = 2.1
 max_version = 2.1
@@ -22,12 +21,12 @@ negotiate_can_regex = "^#\\$#mcp-negotiate-can (.+) package: (.+) min-version: (
 supported_packages = {}   -- Packages that the client supports.
 negotiated_packages = {}  -- Packages that both the client and server support.
 
-blight:load("mcp/mcp_utils.lua")            -- useful utility functions
-blight:load("mcp/mcp_negotiate.lua")        -- mcp-negotiate package
-blight:load("mcp/mcp_client.lua")           -- dns-com-vmoo-client package
-blight:load("mcp/mcp_simpleedit.lua")       -- dns-org-mud-moo-simpleedit package
-blight:load("mcp/lambdamoo_simpleedit.lua") -- early LambdaMOO simpleedit support
-blight:load("mcp/mcp_status.lua")           -- dns-com-awns-status package
+require("mcp_utils")            -- useful utility functions
+require("mcp_negotiate")        -- mcp-negotiate package
+require("mcp_client")           -- dns-com-vmoo-client package
+require("mcp_simpleedit")       -- dns-org-mud-moo-simpleedit package
+require("lambdamoo_simpleedit") -- early LambdaMOO simpleedit support
+require("mcp_status")           -- dns-com-awns-status package
 
 -- Begin registration with the server. This process sends the authentication key
 -- and negotiates what packages are available. This is a bit odd because we have to
@@ -36,9 +35,9 @@ blight:load("mcp/mcp_status.lua")           -- dns-com-awns-status package
 function mcp_register(version)
     seed_rng()
     auth_key = generate_auth_key()
-    blight:send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version, gag)
+    mud.send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version, gag)
     if negotiate_trigger == nil then
-        negotiate_trigger = blight:add_trigger(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can)
+        negotiate_trigger = trigger.add(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can)
     end
 end
 
@@ -55,4 +54,4 @@ function mcp_register_trigger(matches)
     end
 end
 
-blight:add_trigger(advertisement_regex, { gag = not debug_mcp }, mcp_register_trigger)
+trigger.add(advertisement_regex, { gag = not debug_mcp }, mcp_register_trigger)
