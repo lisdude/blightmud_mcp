@@ -8,9 +8,10 @@
 --
 
 -- Send the size of the terminal to the MOO to automatically set @linelength
+-- (terminal width seems to be about 5 off for me)
 function update_linelength()
     local width, height = blight.terminal_dimensions()
-    mud.send("#$#dns-com-vmoo-client-screensize " .. auth_key .. " Cols: " .. width .. " Rows: " .. height, gag)
+    mud.send("#$#dns-com-vmoo-client-screensize " .. auth_key .. " Cols: " .. width - 5 .. " Rows: " .. height, gag)
 end
 function init_client()
     local client_name, client_version = blight.version()
