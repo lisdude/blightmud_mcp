@@ -71,4 +71,9 @@ function random_filename(base_path)
     return file_name
 end
 
-os.execute("rm -f " .. simpleedit_path .. "*.moo")
+-- Delete all of the *.moo files in the simpleedit path.
+function delete_editor_files()
+    os.execute("rm -f " .. simpleedit_path .. "*.moo")
+end
+
+delete_editor_files()

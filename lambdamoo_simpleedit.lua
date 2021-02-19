@@ -76,10 +76,18 @@ function lambdamoo_simpleedit_begin(data)
     current_capture = {editing_trigger, path, handle, nil}
 end
 
+-- Forget everything being edited and delete the temporary files.
+function clear_editor()
+    currently_editing = {}
+    delete_editor_files()
+    blight.output(">> Local edit cache cleared.")
+end
+
 function init_lambdamoo_simpleedit()
     if not auth_key and lambdamoo_trigger == nil then
         lambdamoo_trigger = trigger.add(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
         timer.add(1, 0, lambdamoo_monitor_changes)
+        alias.add("/flush", clear_editor)
         if debug_mcp then
             blight.output(">>> Initialized LambdaMOO local edit protocol")
         end

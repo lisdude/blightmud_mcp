@@ -95,15 +95,23 @@ function simpleedit_begin(data)
     end
 end
 
+-- Forget everything being edited and delete the temporary files.
+function clear_editor()
+    currently_editing = {}
+    delete_editor_files()
+    blight.output(">> Local edit cache cleared.")
+end
+
 function init_simpleedit()
     if simpleedit_trigger ~= nil then
         -- Probably a /reconnect. Forget what we know.
-        currently_editing = {}
+        clear_editor()
     else
         simpleedit_trigger = trigger.add(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
         trigger.add(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
         trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
         timer.add(1, 0, monitor_changes)
+        alias.add("/flush", clear_editor)
         if debug_mcp then
             blight.output(">>> Initialized MCP simpleedit")
         end
