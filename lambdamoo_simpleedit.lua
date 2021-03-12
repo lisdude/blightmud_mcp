@@ -1,5 +1,5 @@
 -- Support for LambdaMOO-style local editing
--- (http://cmc.uib.no/moo/objects/LocalEditing.moo)
+-- (https://lisdude.com/moo/LocalEditing.moo)
 --
 -- Author: lisdude <lisdude@lisdude.com>
 --

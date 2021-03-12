@@ -6,7 +6,7 @@
 -- Author: lisdude <lisdude@lisdude.com>
 --
 
-local status_trigger = "^#\\$#dns-com-awns-status (.+) text: \"(.+)\"$"
+local status_trigger = "^#\\$#dns-com-awns-status (\\d{20}) text: \"(.+)\"$"
 
 function update_status(data)
     if data[2] ~= auth_key then

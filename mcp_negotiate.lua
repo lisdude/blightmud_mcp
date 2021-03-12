@@ -5,7 +5,7 @@
 --
 -- Author: lisdude <lisdude@lisdude.com>
 --
-negotiate_end_regex = "^#\\$#mcp-negotiate-end (.+)$"
+negotiate_end_regex = "^#\\$#mcp-negotiate-end (\\d{20})$"
 
 -- Check a package the server sent against our supported packages.
 -- If we both support it, add it to negotiated_packages and call the

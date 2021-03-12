@@ -15,11 +15,11 @@ debug_mcp = false
 min_version = 2.1
 max_version = 2.1
 
-advertisement_regex = "^#\\$#mcp version: (.+) to: (.+)$"
-negotiate_can_regex = "^#\\$#mcp-negotiate-can (.+) package: (.+) min-version: (.+) max-version: (.+)$"
+advertisement_regex = "^#\\$#mcp version: (\\d{1,4}\\.\\d{1,4}) to: (\\d{1,4}\\.\\d{1,4})$"
+negotiate_can_regex = "^#\\$#mcp-negotiate-can (\\d{20}) package: (.+) min-version: (\\d{1,4}\\.\\d{1,4}) max-version: (\\d{1,4}\\.\\d{1,4})$"
 
-supported_packages = {}   -- Packages that the client supports.
-negotiated_packages = {}  -- Packages that both the client and server support.
+supported_packages = {}         -- Packages that the client supports.
+negotiated_packages = {}        -- Packages that both the client and server support.
 
 require("mcp_utils")            -- useful utility functions
 require("mcp_negotiate")        -- mcp-negotiate package
