@@ -46,6 +46,25 @@ function monitor_changes()
     end
 end
 
+-- Delete files that haven't been edited in <simpleedit_timeout> seconds
+-- Runs every five minutes or so (unless simpleedit_timeout is less than five minutes)
+function timeout_old_edits()
+    local current_time = os.time(os.date('*t'))
+    for data_tag, data in pairs(currently_editing) do
+        local last_modified = last_modified(data[2])
+        if last_modified == nil then
+            currently_editing[data_tag] = nil
+        elseif data[3] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
+--            data[1]:close()
+            os.execute("rm " .. data[2])
+            if debug_mcp then
+                blight.output(">>> Simpleedit deleted editor file " .. data[2])
+            end
+            currently_editing[data_tag] = nil
+        end
+    end
+end
+
 -- When all of the MCP data has been received, close the file and open the editor.
 function simpleedit_end(data)
     local edit_data = currently_editing[data[2]]
@@ -99,7 +118,9 @@ end
 function clear_editor()
     currently_editing = {}
     delete_editor_files()
-    blight.output(">> Local edit cache cleared.")
+    if debug_mcp then
+        blight.output(">>> Simpleedit flushed.")
+    end
 end
 
 function init_simpleedit()
@@ -111,6 +132,9 @@ function init_simpleedit()
         trigger.add(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
         trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
         timer.add(1, 0, monitor_changes)
+        if simpleedit_timeout > 0 then
+            timer.add(simpleedit_timeout < 300 and simpleedit_timeout or 300, 0, timeout_old_edits)
+        end
         alias.add("/flush", clear_editor)
         if debug_mcp then
             blight.output(">>> Initialized MCP simpleedit")

@@ -9,6 +9,7 @@
 simpleedit_path = "simpleedit/"
 edit_command = "vim -c \"set syntax=moo\""
 stat_command = "stat"
+simpleedit_timeout = 10800
 lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"
 debug_mcp = false
 

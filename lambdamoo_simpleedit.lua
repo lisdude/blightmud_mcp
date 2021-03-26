@@ -34,6 +34,25 @@ function lambdamoo_monitor_changes()
     end
 end
 
+-- Delete files that haven't been edited in <simpleedit_timeout> seconds
+-- Runs every five minutes or so (unless simpleedit_timeout is less than five minutes)
+function lambdamoo_timeout_old_edits()
+    local current_time = os.time(os.date('*t'))
+    for path, data in pairs(currently_editing) do
+        local last_modified = last_modified(path)
+        if last_modified == nil then
+            currently_editing[path] = nil
+        elseif data[1] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
+--            data[1]:close()
+            os.execute("rm " .. path)
+            if debug_mcp then
+                blight.output(">>> LambdaMOO edit deleted editor file " .. path)
+            end
+            currently_editing[path] = nil
+        end
+    end
+end
+
 -- Write data to the file as it's received. If the data is a single period on a line,
 -- we close the file and launch our editor.
 function lambdamoo_simpleedit_capture(data)
@@ -77,17 +96,22 @@ function lambdamoo_simpleedit_begin(data)
 end
 
 -- Forget everything being edited and delete the temporary files.
-function clear_editor()
+function lambdamoo_clear_editor()
     currently_editing = {}
     delete_editor_files()
-    blight.output(">> Local edit cache cleared.")
+    if debug_mcp then
+        blight.output(">>> LambdaMOO local edit flushed.")
+    end
 end
 
 function init_lambdamoo_simpleedit()
     if not auth_key and lambdamoo_trigger == nil then
         lambdamoo_trigger = trigger.add(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
         timer.add(1, 0, lambdamoo_monitor_changes)
-        alias.add("/flush", clear_editor)
+        if simpleedit_timeout > 0 then
+            timer.add(simpleedit_timeout < 300 and simpleedit_timeout or 300, 0, lambdamoo_timeout_old_edits)
+        end
+        alias.add("/flush", lambdamoo_clear_editor)
         if debug_mcp then
             blight.output(">>> Initialized LambdaMOO local edit protocol")
         end
