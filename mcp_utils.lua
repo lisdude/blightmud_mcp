@@ -47,7 +47,7 @@ function last_modified(file)
     local last_mod = f:read()
     f:close()
     if last_mod == nil then
-        blight.output(">>> Couldn't get last modified date for " .. file)
+        blight.output(C_BCYAN .. ">>> " .. C_RED .. "Couldn't get last modified date for " .. file .. C_RESET)
         return nil
     else
         return tonumber(last_mod)

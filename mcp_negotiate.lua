@@ -13,7 +13,7 @@ negotiate_end_regex = "^#\\$#mcp-negotiate-end (\\d{20})$"
 function negotiate_can(matches)
     if matches[2] ~= auth_key then
         if debug_mcp then
-            blight.output(">>>> Invalid authorization key for package " .. matches[3])
+            blight.output(C_BCYAN .. ">>>> " .. C_RED .. "Invalid authorization key for package " .. matches[3] .. C_RESET)
         end
         return
     end
@@ -24,16 +24,16 @@ function negotiate_can(matches)
             negotiated_packages[matches[3]] = version
             supported_packages[matches[3]][1]()
             if debug_mcp then
-                blight.output(">>> Package " .. matches[3] .. " found. Negotiated version " .. version)
+                blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Package " .. C_CYAN .. matches[3] .. C_GREEN .. " found. Negotiated version " .. C_RED .. version .. C_RESET)
             end
         else
             if debug_mcp then
-                blight.output(">>> Unsupported version for package " .. matches[3] .. ": " .. matches[4] .. " to " .. matches[5])
+                blight.output(C_BCYAN .. ">>> " .. C_RED .. "Unsupported version for package " .. C_CYAN .. matches[3] .. C_RED .. ": " .. matches[4] .. " to " .. matches[5] .. C_RESET)
             end
         end
     else
         if debug_mcp then
-            blight.output(">>> Package " .. matches[3] .. " not found")
+            blight.output(C_BCYAN .. ">>> " .. C_RED .. "Package " .. C_CYAN .. matches[3] .. C_RED .. " not found" .. C_RESET)
         end
     end
 end

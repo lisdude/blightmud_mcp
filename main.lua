@@ -49,7 +49,7 @@ end
 function mcp_register_trigger(matches)
     mcp_version = supported_version(min_version, max_version, tonumber(matches[2]), tonumber(matches[3]))
     if mcp_version == false then
-        blight.output(">>> Unsupported MCP versions: " .. matches[2] .. " to " .. matches[3] .. " <<<")
+        blight.output(C_BCYAN .. ">>> " .. C_RED .. "Unsupported MCP versions: " .. matches[2] .. " to " .. matches[3] .. " <<<" .. C_RESET)
     else
         mcp_register(mcp_version)
     end

@@ -58,7 +58,7 @@ function timeout_old_edits()
 --            data[1]:close()
             os.execute("rm " .. data[2])
             if debug_mcp then
-                blight.output(">>> Simpleedit deleted editor file " .. data[2])
+                blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit deleted editor file " .. data[2] .. C_RESET)
             end
             currently_editing[data_tag] = nil
         end
@@ -70,7 +70,7 @@ function simpleedit_end(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
         if debug_mcp then
-            blight.output(">>> Simpleedit end had invalid data-tag")
+            blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit end had invalid data-tag!" .. C_RESET)
         end
         return
     end
@@ -85,7 +85,7 @@ function simpleedit_add_content(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
         if debug_mcp then
-            blight.output(">>> Simpleedit content had invalid data-tag")
+            blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit content had invalid data-tag!" .. C_RESET)
         end
         return
     end
@@ -96,7 +96,7 @@ end
 function simpleedit_begin(data)
     if data[2] ~= auth_key then
         if debug_mcp then
-            blight.output(">>> Simpleedit authorization key didn't match")
+            blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit authorization key didn't match!" .. C_RESET)
         end
         return
     end
@@ -108,7 +108,7 @@ function simpleedit_begin(data)
     path = random_filename(simpleedit_path)
     local handle = io.open(path, "w")
     if handle == nil then
-        blight.output(">>> Couldn't open file " .. path .. " for editing!")
+        blight.output(C_BCYAN .. ">>> " .. C_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
     else
         currently_editing[data_tag] = {handle, path, 0, reference, name, data_type, content}
     end
@@ -119,7 +119,7 @@ function clear_editor()
     currently_editing = {}
     delete_editor_files()
     if debug_mcp then
-        blight.output(">>> Simpleedit flushed.")
+        blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit flushed." .. C_RESET)
     end
 end
 
@@ -137,7 +137,7 @@ function init_simpleedit()
         end
         alias.add("^/flush$", clear_editor)
         if debug_mcp then
-            blight.output(">>> Initialized MCP simpleedit")
+            blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized MCP simpleedit" .. C_RESET)
         end
     end
 end

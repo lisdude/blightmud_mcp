@@ -46,7 +46,7 @@ function lambdamoo_timeout_old_edits()
 --            data[1]:close()
             os.execute("rm " .. path)
             if debug_mcp then
-                blight.output(">>> LambdaMOO edit deleted editor file " .. path)
+                blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "LambdaMOO edit deleted editor file " .. path .. C_RESET)
             end
             currently_editing[path] = nil
         end
@@ -87,7 +87,7 @@ function lambdamoo_simpleedit_begin(data)
     path = random_filename(simpleedit_path)
     local handle = io.open(path, "w")
     if handle == nil then
-        blight.output(">>> Couldn't open file " .. path .. " for editing!")
+        blight.output(C_BCYAN .. ">>> " .. B_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
     else
         currently_editing[path] = {0, name, command}
     end
@@ -100,7 +100,7 @@ function lambdamoo_clear_editor()
     currently_editing = {}
     delete_editor_files()
     if debug_mcp then
-        blight.output(">>> LambdaMOO local edit flushed.")
+        blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "LambdaMOO local edit flushed." .. C_RESET)
     end
 end
 
@@ -113,7 +113,7 @@ function init_lambdamoo_simpleedit()
         end
         alias.add("^/flush$", lambdamoo_clear_editor)
         if debug_mcp then
-            blight.output(">>> Initialized LambdaMOO local edit protocol")
+            blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized LambdaMOO local edit protocol" .. C_RESET)
         end
     end
 end
