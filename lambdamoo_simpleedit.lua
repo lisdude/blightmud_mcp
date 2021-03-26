@@ -111,7 +111,7 @@ function init_lambdamoo_simpleedit()
         if simpleedit_timeout > 0 then
             timer.add(simpleedit_timeout < 300 and simpleedit_timeout or 300, 0, lambdamoo_timeout_old_edits)
         end
-        alias.add("/flush", lambdamoo_clear_editor)
+        alias.add("^/flush$", lambdamoo_clear_editor)
         if debug_mcp then
             blight.output(">>> Initialized LambdaMOO local edit protocol")
         end

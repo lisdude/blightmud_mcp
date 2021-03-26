@@ -17,7 +17,7 @@ function init_client()
     local client_name, client_version = blight.version()
     mud.send("#$#dns-com-vmoo-client-info " .. auth_key .. " name: \"" .. client_name .. "\" text-version: \"" .. client_version .. "\" internal-version: \"0\"", gag)
     update_linelength()
-    alias.add("/linelen", update_linelength)
+    alias.add("^/linelen$", update_linelength)
 end
 
 supported_packages["dns-com-vmoo-client"] = {init_client, 1.0, 1.0}
