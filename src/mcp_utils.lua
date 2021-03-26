@@ -71,6 +71,20 @@ function random_filename(base_path)
     return file_name
 end
 
+-- Print tables for debugging
+function print_table(o)
+   if type(o) == 'table' then
+      local s = '{ '
+      for k,v in pairs(o) do
+         if type(k) ~= 'number' then k = '"'..k..'"' end
+         s = s .. '['..k..'] = ' .. print_table(v) .. ','
+      end
+      return s .. '} '
+   else
+      return tostring(o)
+   end
+end
+
 -- Delete all of the *.moo files in the simpleedit path.
 function delete_editor_files()
     os.execute("rm -f " .. simpleedit_path .. "*.moo")
