@@ -2,12 +2,14 @@
 
 This is a collection of Lua scripts for Blightmud that implement the [MUD Client Protocol v2.1](http://www.moo.mud.org/mcp2/mcp2.html).
 
-It includes the following MCP packages:
-- dns-com-vmoo-client (Report client name and version. Also automatically set @linelength.)
-- dns-org-mud-moo-simpleedit (Allow editing of MOO verbs and lists in an external editor.)
-- dns-com-awns-status (Write arbitrary text to the client status bar)
+## Supported Packages
+| Package                   | Description                                                                                           |
+| --------------------------|-------------------------------------------------------------------------------------------------------|
+|dns-com-vmoo-client        | Report client name and version to the MOO. Also automatically set @linelength based on terminal width.|
+|dns-org-mud-moo-simpleedit | Allow editing of MOO verbs and lists in an external editor.                                           |
+|dns-com-awns-status        | Write arbitrary text to the client status bar.                                                        |
 
-In addition, for MOOs that don't support MCP, these scripts include support for the early LambdaMOO local editing protocol.
+In addition, for MOOs that don't support MCP, these scripts include support for the [early LambdaMOO local editing protocol](https://lisdude.com/moo/localEditing.moo).
 
 ## Installation
 1. Clone this repository in the Blightmud directory: `git clone https://github.com/lisdude/blightmud_mcp.git mcp`
@@ -18,9 +20,10 @@ If you want to auto-load the script instead of typing the load command every tim
 
 ## Commands
 Some packages add custom commands:
-| Command  | Effect                                                           |
-| ---------|------------------------------------------------------------------|
-| /linelen | Automatically set your @linelength based on your terminal width. |
+| Command  | Effect                                                                                                 |
+| ---------|--------------------------------------------------------------------------------------------------------|
+| /linelen | Set your @linelength based on your terminal width.                                                     |
+| /flush   | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes.|
 
 ## Configuration
 You can customize some settings inside the `mcp.lua` file:
