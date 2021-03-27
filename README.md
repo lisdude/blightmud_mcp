@@ -13,7 +13,7 @@ In addition, for MOOs that don't support MCP, these scripts include support for 
 
 ## Installation
 Within Blightmud:
-1. `/add plugin https://github.com/lisdude/blightmud_mcp`
+1. `/add_plugin https://github.com/lisdude/blightmud_mcp`
 2. `/enable_plugin blightmud_mcp`
 
 ## Commands
