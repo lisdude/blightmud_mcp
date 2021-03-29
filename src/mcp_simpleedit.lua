@@ -77,7 +77,7 @@ function simpleedit_end(data)
     edit_data[1]:close()
     currently_editing[data[2]][3] = last_modified(edit_data[2])
     currently_editing[data[2]][1] = nil
-    os.execute(edit_command .." " .. edit_data[2])
+    os.execute(edit_command:gsub("%S+", {["%FILE"] = edit_data[2], ["%NAME"] = edit_data[5]}))
 end
 
 -- As MCP data is received, write it to the file we want to edit.

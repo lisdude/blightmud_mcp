@@ -6,7 +6,7 @@
 --
 --- Configuration ---
 simpleedit_path = string.sub(package.path, 1, string.find(package.path, "?")-1) .. "simpleedit/"
-edit_command = "vim -c \"set syntax=moo\""
+edit_command = "vim -c \"set syntax=moo\" %FILE"
 stat_command = "stat"
 simpleedit_timeout = 10800
 lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"

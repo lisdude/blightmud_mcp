@@ -69,7 +69,7 @@ function lambdamoo_simpleedit_capture(data)
         trigger.remove(current_capture[1].id)
         currently_editing[path][1] = last_modified(path)
         local edit_data = currently_editing[path]
-        os.execute(edit_command .. " " .. path)
+        os.execute(edit_command:gsub("%S+", {["%FILE"] = path, ["%NAME"] = edit_data[2]}))
         current_capture = {}
     else
         if data[1].sub(1, 2) == ".." then

@@ -16,6 +16,8 @@ Within Blightmud:
 1. `/add_plugin https://github.com/lisdude/blightmud_mcp`
 2. `/enable_plugin blightmud_mcp`
 
+**NOTE**: macOS users will need to change the `stat_command` option in main.lua. See [Configuration](#configuration) below.
+
 ## Commands
 Some packages add custom commands:
 | Command  | Effect                                                                                                 |
@@ -24,7 +26,7 @@ Some packages add custom commands:
 | /flush   | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes.|
 
 ## Configuration
-You can customize some settings inside the `main.lua` file. You can find the file in `/home/<your username>/.local/share/blightmud/plugins/blightmud_mcp` or type `/help plugin` in Blightmud to get the plugin path.
+While not necessary to get going (unless you use macOS...), you can customize some settings inside the `main.lua` file. You can find the file in `/home/<your username>/.local/share/blightmud/plugins/blightmud_mcp` or type `/help plugin` in Blightmud to get the plugin path.
 | Setting                  | Effect                                                                                                                             |
 | -------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | simpleedit_path          | The path where editor files are created.                                                                                           |
@@ -33,3 +35,16 @@ You can customize some settings inside the `main.lua` file. You can find the fil
 | stat_command             | Your 'stat' command. macOS users should use the Homebrew `gstat` command.                                                          |
 | lambdamoo_connect_string | The string used to identify a MOO and initialize the LambdaMOO local edit protocol. (Only applies to MOOs without MCP 2.1.)        |
 | debug_mcp                | Don't hide out-of-band MCP communication. Show additional debugging messages.                                                      |
+
+### Edit Command Substitions
+The `edit_command` variable accepts these substitutions:
+| String | Substitution                                 |
+|--------|----------------------------------------------|
+| %NAME  | The name of the verb or list being edited.   |
+| %FILE  | The path to the file being edited.           |
+
+For example, if you're using tmux and want to open an editor in a new tmux window, you could do something like:
+
+```bash
+edit_command = "tmux new-window -n %NAME vim -c \"set syntax=moo\" %FILE"
+```
