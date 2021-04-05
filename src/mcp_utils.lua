@@ -101,7 +101,6 @@ end
 
 -- Delete all of the *.moo files in the simpleedit path.
 function delete_editor_files()
-    blight.output(mcp_settings["simpleedit_path"])
     os.execute("rm -f \"" .. mcp_settings["simpleedit_path"] .. "\"*.moo")
 end
 

@@ -1,12 +1,6 @@
 -- MCP dns-org-mud-moo-simpleedit Package
 -- (http://www.moo.mud.org/mcp2/simpleedit.html)
 --
--- This package makes several assumptions that may not be true for you:
--- 1. You're using Blightmud inside of tmux.
--- 2. You edit your text files in Vim.
---
--- If these are not true for you, this code may require some modification.
---
 -- Author: lisdude <lisdude@lisdude.com>
 --
 local edit_begin_regex = "^#\\$#dns-org-mud-moo-simpleedit-content (\\d{20}) reference: (\".+\") name: (\"?.*\"?) type: (.+) content\\*: (\".*\") _data-tag: (.+)$"

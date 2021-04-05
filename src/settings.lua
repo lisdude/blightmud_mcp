@@ -41,6 +41,12 @@ function mcp_change_setting(args)
     if mcp_settings[args[2]] == nil then
         blight.output("[mcp] " .. C_RED .. " Setting doesn't exist " .. C_RESET)
     else
+        -- Some settings require special shenanigans:
+        if args[2] == "simpleedit_timeout" then
+            args[3] = tonumber(args[3])
+        elseif args[2] == "debug_mcp" then
+            args[3] = args[3] == "true" and true or false
+        end
         mcp_settings[args[2]] = args[3]
         store.disk_write("mcp_settings", json.encode(mcp_settings))
         blight.output("[mcp] " .. C_YELLOW .. args[2] .. C_RESET .. " => " .. tostring(mcp_settings[args[2]]))
