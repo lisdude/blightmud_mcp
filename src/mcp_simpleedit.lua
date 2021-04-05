@@ -16,6 +16,8 @@ local edit_end_regex = "^#\\$#: (.+)$"
 -- Files currently being edited. The key is the data-tag and the value is another table with:
 -- {file handle, file name, last edit time, reference, name, type, content}
 local currently_editing = {}
+-- The time of the last edit. See monitor_changes for why this is.
+local last_edit
 
 -- Send any changes back to the MOO
 function simpleedit_send(data)
@@ -34,14 +36,19 @@ end
 
 -- Monitor our currently_editing files for changes.
 function monitor_changes()
-    for data_tag, data in pairs(currently_editing) do
-        local last_modified = last_modified(data[2])
-        if last_modified == nil then
-            -- The file has likely been deleted. Forget about it.
-            currently_editing[data_tag] = nil
-        elseif data[3] ~= 0 and last_modified ~= data[3] then
-            currently_editing[data_tag][3] = last_modified
-            simpleedit_send(data)
+    -- Check the directory itself. If it hasn't been modified, we know none of our files have either.
+    -- This way we can skip constantly checking dozens of files needlessly.
+    if next(currently_editing) ~= nil and last_modified(simpleedit_path) ~= last_edit then
+        for data_tag, data in pairs(currently_editing) do
+            local last_modified = last_modified(data[2])
+            if last_modified == nil then
+                -- The file has likely been deleted. Forget about it.
+                currently_editing[data_tag] = nil
+            elseif data[3] ~= 0 and last_modified ~= data[3] then
+                currently_editing[data_tag][3] = last_modified
+                last_edit = last_modified
+                simpleedit_send(data)
+            end
         end
     end
 end
