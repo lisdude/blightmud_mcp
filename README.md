@@ -19,14 +19,15 @@ Within Blightmud:
 **NOTE**: macOS users will need to change the `stat_command` option in main.lua. See [Configuration](#configuration) below.
 
 ## Commands
-Some packages add custom commands:
-| Command  | Effect                                                                                                 |
-| ---------|--------------------------------------------------------------------------------------------------------|
-| /linelen | Set your @linelength based on your terminal width.                                                     |
-| /flush   | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes.|
+| Command  | Effect                                                                                                                                                                     |
+| ---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| /mcp [setting] [value] | View or change plugin options. See [Configuration](#configuration) below.                                                                                    |
+| /linelen               | Set your @linelength based on your terminal width. (dns-com-vmoo-client)                                                                                     |
+| /flush                 | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes. (dns-org-mud-moo-simpleedit or LambdaMOO local edit) |
 
 ## Configuration
-While not necessary to get going (unless you use macOS...), you can customize some settings inside the `main.lua` file. You can find the file in `/home/<your username>/.local/share/blightmud/plugins/blightmud_mcp` or type `/help plugin` in Blightmud to get the plugin path.
+While not necessary to get going (unless you use macOS...), you can customize some settings using the `/mcp` command. When supplied with no arguments, it will print your current settings. When provided with a single argument (e.g. `/mcp simpleedit_timeout`) it will print the current value of that setting. When provided when two arguments, it will change the setting (e.g. `/mcp simpleedit_timeout 0`).
+
 | Setting                  | Effect                                                                                                                             |
 | -------------------------|------------------------------------------------------------------------------------------------------------------------------------|
 | simpleedit_path          | The path where editor files are created.                                                                                           |
@@ -35,6 +36,8 @@ While not necessary to get going (unless you use macOS...), you can customize so
 | stat_command             | Your 'stat' command. macOS users should use the Homebrew `gstat` command.                                                          |
 | lambdamoo_connect_string | The string used to identify a MOO and initialize the LambdaMOO local edit protocol. (Only applies to MOOs without MCP 2.1.)        |
 | debug_mcp                | Don't hide out-of-band MCP communication. Show additional debugging messages.                                                      |
+
+**Note**: Some setting require reloading the plugin before they take effect.
 
 ### Edit Command Substitions
 The `edit_command` variable accepts these substitutions:

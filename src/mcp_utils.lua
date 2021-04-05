@@ -1,4 +1,4 @@
-if debug_mcp then
+if mcp_settings["debug_mcp"] then
     gag = {}
 else
     gag = {gag=true, skip_log=true}  -- Default mud.send options.
@@ -43,7 +43,7 @@ end
 
 -- Return a file's last modification time
 function last_modified(file)
-    local f = io.popen(stat_command .. " -c %Y \"" .. file .. "\"")
+    local f = io.popen(mcp_settings["stat_command"] .. " -c %Y \"" .. file .. "\"")
     local last_mod = f:read()
     f:close()
     if last_mod == nil then
@@ -101,7 +101,8 @@ end
 
 -- Delete all of the *.moo files in the simpleedit path.
 function delete_editor_files()
-    os.execute("rm -f " .. simpleedit_path .. "*.moo")
+    blight.output(mcp_settings["simpleedit_path"])
+    os.execute("rm -f \"" .. mcp_settings["simpleedit_path"] .. "\"*.moo")
 end
 
 delete_editor_files()

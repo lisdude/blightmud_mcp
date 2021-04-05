@@ -38,7 +38,7 @@ end
 function monitor_changes()
     -- Check the directory itself. If it hasn't been modified, we know none of our files have either.
     -- This way we can skip constantly checking dozens of files needlessly.
-    if next(currently_editing) ~= nil and last_modified(simpleedit_path) ~= last_edit then
+    if next(currently_editing) ~= nil and last_modified(mcp_settings["simpleedit_path"]) ~= last_edit then
         for data_tag, data in pairs(currently_editing) do
             local last_modified = last_modified(data[2])
             if last_modified == nil then
@@ -61,10 +61,10 @@ function timeout_old_edits()
         local last_modified = last_modified(data[2])
         if last_modified == nil then
             currently_editing[data_tag] = nil
-        elseif data[3] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
+        elseif data[3] ~=0 and (current_time - last_modified) >= mcp_settings["simpleedit_timeout"] then
 --            data[1]:close()
             os.execute("rm \"" .. data[2] .. "\"")
-            if debug_mcp then
+            if mcp_settings["debug_mcp"] then
                 blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit deleted editor file " .. data[2] .. C_RESET)
             end
             currently_editing[data_tag] = nil
@@ -76,7 +76,7 @@ end
 function simpleedit_end(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit end had invalid data-tag!" .. C_RESET)
         end
         return
@@ -84,7 +84,7 @@ function simpleedit_end(data)
     edit_data[1]:close()
     currently_editing[data[2]][3] = last_modified(edit_data[2])
     currently_editing[data[2]][1] = nil
-    local edit_cmd = edit_command:gsub("%%FILE", edit_data[2])
+    local edit_cmd = mcp_settings["edit_command"]:gsub("%%FILE", edit_data[2])
     edit_cmd = edit_cmd:gsub("%%NAME", edit_data[5])
     os.execute(edit_cmd)
 end
@@ -93,7 +93,7 @@ end
 function simpleedit_add_content(data)
     local edit_data = currently_editing[data[2]]
     if edit_data == nil then
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit content had invalid data-tag!" .. C_RESET)
         end
         return
@@ -104,7 +104,7 @@ end
 -- Create a file to be edited.
 function simpleedit_begin(data)
     if data[2] ~= auth_key then
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_RED .. "Simpleedit authorization key didn't match!" .. C_RESET)
         end
         return
@@ -114,7 +114,7 @@ function simpleedit_begin(data)
     local data_type = data[5]
     local content = data[6]
     local data_tag = data[7]
-    path = simpleedit_filename(simpleedit_path .. sanitize_filename(data[4]))
+    path = simpleedit_filename(mcp_settings["simpleedit_path"] .. sanitize_filename(data[4]))
     local handle = io.open(path, "w")
     if handle == nil then
         blight.output(C_BCYAN .. ">>> " .. C_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
@@ -127,7 +127,7 @@ end
 function clear_editor()
     currently_editing = {}
     delete_editor_files()
-    if debug_mcp then
+    if mcp_settings["debug_mcp"] then
         blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit flushed." .. C_RESET)
     end
 end
@@ -137,15 +137,15 @@ function init_simpleedit()
         -- Probably a /reconnect. Forget what we know.
         clear_editor()
     else
-        simpleedit_trigger = trigger.add(edit_begin_regex, { gag = not debug_mcp }, simpleedit_begin)
-        trigger.add(edit_content_regex, { gag = not debug_mcp }, simpleedit_add_content)
-        trigger.add(edit_end_regex, { gag = not debug_mcp }, simpleedit_end)
+        simpleedit_trigger = trigger.add(edit_begin_regex, { gag = not mcp_settings["debug_mcp"] }, simpleedit_begin)
+        trigger.add(edit_content_regex, { gag = not mcp_settings["debug_mcp"] }, simpleedit_add_content)
+        trigger.add(edit_end_regex, { gag = not mcp_settings["debug_mcp"] }, simpleedit_end)
         timer.add(1, 0, monitor_changes)
-        if simpleedit_timeout > 0 then
-            timer.add(simpleedit_timeout < 300 and simpleedit_timeout or 300, 0, timeout_old_edits)
+        if mcp_settings["simpleedit_timeout"] > 0 then
+            timer.add(mcp_settings["simpleedit_timeout"] < 300 and mcp_settings["simpleedit_timeout"] or 300, 0, timeout_old_edits)
         end
         alias.add("^/flush$", clear_editor)
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized MCP simpleedit" .. C_RESET)
         end
     end

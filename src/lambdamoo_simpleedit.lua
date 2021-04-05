@@ -42,10 +42,10 @@ function lambdamoo_timeout_old_edits()
         local last_modified = last_modified(path)
         if last_modified == nil then
             currently_editing[path] = nil
-        elseif data[1] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
+        elseif data[1] ~=0 and (current_time - last_modified) >= mcp_settings["simpleedit_timeout"] then
 --            data[1]:close()
             os.execute("rm \"" .. path .. "\"")
-            if debug_mcp then
+            if mcp_settings["debug_mcp"] then
                 blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "LambdaMOO edit deleted editor file " .. path .. C_RESET)
             end
             currently_editing[path] = nil
@@ -69,7 +69,7 @@ function lambdamoo_simpleedit_capture(data)
         trigger.remove(current_capture[1].id)
         currently_editing[path][1] = last_modified(path)
         local edit_data = currently_editing[path]
-        local edit_cmd = edit_command:gsub("%%FILE", path)
+        local edit_cmd = mcp_settings["edit_command"]:gsub("%%FILE", path)
         edit_cmd = edit_cmd:gsub("%%NAME", edit_data[2])
         os.execute(edit_cmd)
         current_capture = {}
@@ -86,14 +86,14 @@ end
 function lambdamoo_simpleedit_begin(data)
     local name = sanitize_name("\"" .. data[2] .. "\"")
     local command = data[3]
-    path = simpleedit_filename(simpleedit_path .. sanitize_filename(data[2]))
+    path = simpleedit_filename(mcp_settings["simpleedit_path"] .. sanitize_filename(data[2]))
     local handle = io.open(path, "w")
     if handle == nil then
         blight.output(C_BCYAN .. ">>> " .. B_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
     else
         currently_editing[path] = {0, name, command}
     end
-    local editing_trigger = trigger.add(".+", { gag = not debug_mcp }, lambdamoo_simpleedit_capture)
+    local editing_trigger = trigger.add(".+", { gag = not mcp_settings["debug_mcp"] }, lambdamoo_simpleedit_capture)
     current_capture = {editing_trigger, path, handle, nil}
 end
 
@@ -101,23 +101,23 @@ end
 function lambdamoo_clear_editor()
     currently_editing = {}
     delete_editor_files()
-    if debug_mcp then
+    if mcp_settings["debug_mcp"] then
         blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "LambdaMOO local edit flushed." .. C_RESET)
     end
 end
 
 function init_lambdamoo_simpleedit()
     if not auth_key and lambdamoo_trigger == nil then
-        lambdamoo_trigger = trigger.add(begin_regex, { gag = not debug_mcp }, lambdamoo_simpleedit_begin)
+        lambdamoo_trigger = trigger.add(begin_regex, { gag = not mcp_settings["debug_mcp"] }, lambdamoo_simpleedit_begin)
         timer.add(1, 0, lambdamoo_monitor_changes)
-        if simpleedit_timeout > 0 then
-            timer.add(simpleedit_timeout < 300 and simpleedit_timeout or 300, 0, lambdamoo_timeout_old_edits)
+        if mcp_settings["simpleedit_timeout"] > 0 then
+            timer.add(mcp_settings["simpleedit_timeout"] < 300 and mcp_settings["simpleedit_timeout"] or 300, 0, lambdamoo_timeout_old_edits)
         end
         alias.add("^/flush$", lambdamoo_clear_editor)
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized LambdaMOO local edit protocol" .. C_RESET)
         end
     end
 end
 
-trigger.add(lambdamoo_connect_string, { gag = not debug_mcp }, init_lambdamoo_simpleedit)
+trigger.add(mcp_settings["lambdamoo_connect_string"], { gag = not mcp_settings["debug_mcp"] }, init_lambdamoo_simpleedit)

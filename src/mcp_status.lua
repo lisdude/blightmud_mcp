@@ -10,7 +10,7 @@ local status_trigger = "^#\\$#dns-com-awns-status (\\d{20}) text: \"(.+)\"$"
 
 function update_status(data)
     if data[2] ~= auth_key then
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_RED .. "dns-com-awns-status authorization key didn't match!" .. C_RESET)
         end
     else
@@ -20,7 +20,7 @@ end
 
 function init_status()
     if status_init_trigger == nil then
-        status_init_trigger = trigger.add(status_trigger, { gag = not debug_mcp }, update_status)
+        status_init_trigger = trigger.add(status_trigger, { gag = not mcp_settings["debug_mcp"] }, update_status)
     end
 end
 

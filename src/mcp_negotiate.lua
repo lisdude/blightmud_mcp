@@ -24,7 +24,7 @@ function mcp_register(version)
     auth_key = generate_auth_key()
     mud.send("#$#mcp authentication-key: " .. auth_key .. " version: " .. min_version .. " to: " .. max_version, gag)
     if negotiate_trigger == nil then
-        negotiate_trigger = trigger.add(negotiate_can_regex, { gag = not debug_mcp }, negotiate_can)
+        negotiate_trigger = trigger.add(negotiate_can_regex, { gag = not mcp_settings["debug_mcp"] }, negotiate_can)
     end
 end
 
@@ -46,7 +46,7 @@ end
 -- associated initialization function.
 function negotiate_can(matches)
     if matches[2] ~= auth_key then
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>>> " .. C_RED .. "Invalid authorization key for package " .. matches[3] .. C_RESET)
         end
         return
@@ -57,16 +57,16 @@ function negotiate_can(matches)
         if version ~= false then
             negotiated_packages[matches[3]] = version
             supported_packages[matches[3]][1]()
-            if debug_mcp then
+            if mcp_settings["debug_mcp"] then
                 blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Package " .. C_CYAN .. matches[3] .. C_GREEN .. " found. Negotiated version " .. C_RED .. version .. C_RESET)
             end
         else
-            if debug_mcp then
+            if mcp_settings["debug_mcp"] then
                 blight.output(C_BCYAN .. ">>> " .. C_RED .. "Unsupported version for package " .. C_CYAN .. matches[3] .. C_RED .. ": " .. matches[4] .. " to " .. matches[5] .. C_RESET)
             end
         end
     else
-        if debug_mcp then
+        if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_RED .. "Package " .. C_CYAN .. matches[3] .. C_RED .. " not found" .. C_RESET)
         end
     end
@@ -84,4 +84,4 @@ end
 
 supported_packages["mcp-negotiate"] = {init_mcp_negotiate, 1.0, 2.0}
 
-trigger.add(advertisement_regex, { gag = not debug_mcp }, mcp_register_trigger)
+trigger.add(advertisement_regex, { gag = not mcp_settings["debug_mcp"] }, mcp_register_trigger)

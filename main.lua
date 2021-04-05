@@ -4,15 +4,10 @@
 --
 -- Author: lisdude <lisdude@lisdude.com>
 --
---- Configuration ---
-simpleedit_path = string.sub(package.path, 1, string.find(package.path, "?")-1) .. "simpleedit/"
-edit_command = "vim -c \"set syntax=moo\" %FILE"
-stat_command = "stat"
-simpleedit_timeout = 10800
-lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*"
-debug_mcp = false
+mcp_plugin_path = string.sub(package.path, 1, string.find(package.path, "?")-1)
 
 --- Requirements
+require("src/settings")             -- settings
 require("src/mcp_utils")            -- useful utility functions
 require("src/mcp_negotiate")        -- mcp-negotiate package
 require("src/mcp_client")           -- dns-com-vmoo-client package
