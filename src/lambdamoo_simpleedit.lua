@@ -44,7 +44,7 @@ function lambdamoo_timeout_old_edits()
             currently_editing[path] = nil
         elseif data[1] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
 --            data[1]:close()
-            os.execute("rm " .. path)
+            os.execute("rm \"" .. path .. "\"")
             if debug_mcp then
                 blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "LambdaMOO edit deleted editor file " .. path .. C_RESET)
             end

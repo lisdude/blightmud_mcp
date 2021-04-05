@@ -63,7 +63,7 @@ function timeout_old_edits()
             currently_editing[data_tag] = nil
         elseif data[3] ~=0 and (current_time - last_modified) >= simpleedit_timeout then
 --            data[1]:close()
-            os.execute("rm " .. data[2])
+            os.execute("rm \"" .. data[2] .. "\"")
             if debug_mcp then
                 blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit deleted editor file " .. data[2] .. C_RESET)
             end
