@@ -77,7 +77,9 @@ function simpleedit_end(data)
     edit_data[1]:close()
     currently_editing[data[2]][3] = last_modified(edit_data[2])
     currently_editing[data[2]][1] = nil
-    os.execute(edit_command:gsub("%S+", {["%FILE"] = edit_data[2], ["%NAME"] = edit_data[5]}))
+    local edit_cmd = edit_command:gsub("%%FILE", edit_data[2])
+    edit_cmd = edit_cmd:gsub("%%NAME", edit_data[5])
+    os.execute(edit_cmd)
 end
 
 -- As MCP data is received, write it to the file we want to edit.
@@ -105,7 +107,7 @@ function simpleedit_begin(data)
     local data_type = data[5]
     local content = data[6]
     local data_tag = data[7]
-    path = random_filename(simpleedit_path)
+    path = simpleedit_filename(simpleedit_path .. sanitize_filename(data[4]))
     local handle = io.open(path, "w")
     if handle == nil then
         blight.output(C_BCYAN .. ">>> " .. C_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)

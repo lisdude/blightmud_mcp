@@ -43,7 +43,7 @@ end
 
 -- Return a file's last modification time
 function last_modified(file)
-    local f = io.popen(stat_command .. " -c %Y " .. file)
+    local f = io.popen(stat_command .. " -c %Y \"" .. file .. "\"")
     local last_mod = f:read()
     f:close()
     if last_mod == nil then
@@ -61,11 +61,25 @@ function sanitize_name(name)
     return name:gsub("%W", "\\%1")
 end
 
+-- Remove special characters from file names.
+function sanitize_filename(name)
+    name = name:gsub("/", "-")
+    name = name:gsub('"', "")
+
+--    if package.config:sub(1,1) == "\\" then
+--        -- Windows is a little more picky about what characters it allows.
+--        -- We should probably also get rid of CON, PRN, AUX, NUL, COM1-9, etc. If I ever test this on Windows.
+--        name = name:gsub("[\\%?%%%*|\"<>]", "")
+--        name = name:gsub(":", " - ")
+--    end
+
+    return name
+end
+
 -- Return a random file name
-function random_filename(base_path)
-    file_name = base_path .. tostring(math.random(0, 9223372036854775807)) .. ".moo"
+function simpleedit_filename(base_path)
+    file_name = base_path .. ".moo"
     while file_exists(file_name) do
-        -- This seems extraordinarily unlikely!
         file_name = base_path .. tostring(math.random(0, 9223372036854775807)) .. ".moo"
     end
     return file_name

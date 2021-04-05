@@ -69,7 +69,9 @@ function lambdamoo_simpleedit_capture(data)
         trigger.remove(current_capture[1].id)
         currently_editing[path][1] = last_modified(path)
         local edit_data = currently_editing[path]
-        os.execute(edit_command:gsub("%S+", {["%FILE"] = path, ["%NAME"] = edit_data[2]}))
+        local edit_cmd = edit_command:gsub("%%FILE", path)
+        edit_cmd = edit_cmd:gsub("%%NAME", edit_data[2])
+        os.execute(edit_cmd)
         current_capture = {}
     else
         if data[1].sub(1, 2) == ".." then
@@ -84,7 +86,7 @@ end
 function lambdamoo_simpleedit_begin(data)
     local name = sanitize_name("\"" .. data[2] .. "\"")
     local command = data[3]
-    path = random_filename(simpleedit_path)
+    path = simpleedit_filename(simpleedit_path .. sanitize_filename(data[2]))
     local handle = io.open(path, "w")
     if handle == nil then
         blight.output(C_BCYAN .. ">>> " .. B_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
