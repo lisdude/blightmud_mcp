@@ -4,7 +4,6 @@
 --
 -- Author: lisdude <lisdude@lisdude.com>
 --
-mcp_plugin_path = string.sub(package.path, 1, string.find(package.path, "?")-1)
 
 --- Requirements
 require("src/settings")             -- settings

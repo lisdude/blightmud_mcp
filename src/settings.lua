@@ -1,7 +1,7 @@
 -- Restore default settings and save them to disk.
 local function mcp_reset_defaults()
     local mcp_defaults = {
-        simpleedit_path = mcp_plugin_path .. "simpleedit/",
+        simpleedit_path = plugin.dir("blightmud_mcp") .. "simpleedit/",
         edit_command = "vim -c \"set syntax=moo\" %FILE",
         stat_command = "stat",
         simpleedit_timeout = 10800,
