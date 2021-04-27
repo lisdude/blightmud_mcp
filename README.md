@@ -25,7 +25,7 @@ Within Blightmud:
 | /linelen               | Set your @linelength based on your terminal width. (dns-com-vmoo-client)                                                                                     |
 | /flush                 | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes. (dns-org-mud-moo-simpleedit or LambdaMOO local edit) |
 | /flush-all             | Delete all intermediary .moo files, including those belonging to other Blightmud instances. |
-| / editing              | Display a list of files currently open for editing. |
+| /editing              | Display a list of files currently open for editing. |
 
 ## Configuration
 While not necessary to get going (unless you use macOS...), you can customize some settings using the `/mcp` command. When supplied with no arguments, it will print your current settings. When provided with a single argument (e.g. `/mcp simpleedit_timeout`) it will print the current value of that setting. When provided when two arguments, it will change the setting (e.g. `/mcp simpleedit_timeout 0`).
