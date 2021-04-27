@@ -24,6 +24,7 @@ Within Blightmud:
 | /mcp [setting] [value] | View or change plugin options. See [Configuration](#configuration) below.                                                                                    |
 | /linelen               | Set your @linelength based on your terminal width. (dns-com-vmoo-client)                                                                                     |
 | /flush                 | Reset the local editor. This deletes all intermediary .moo files and stops monitoring them for changes. (dns-org-mud-moo-simpleedit or LambdaMOO local edit) |
+| /flush-all             | Delete all intermediary .moo files, including those belonging to other Blightmud instances. |
 | / editing              | Display a list of files currently open for editing. |
 
 ## Configuration

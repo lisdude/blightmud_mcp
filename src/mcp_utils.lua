@@ -103,5 +103,3 @@ end
 function delete_editor_files()
     os.execute("rm -f \"" .. mcp_settings["simpleedit_path"] .. "\"*.moo")
 end
-
-delete_editor_files()

@@ -119,6 +119,16 @@ end
 
 -- Forget everything being edited and delete the temporary files.
 function clear_editor()
+    for data_tag, data in pairs(currently_editing) do
+        if file_exists(data[2]) then
+            os.execute("rm \"" .. data[2] .. "\"")
+            currently_editing[data_tag] = nil
+        end
+    end
+    currently_editing = {}
+end
+
+function flush_all_editors()
     currently_editing = {}
     delete_editor_files()
     if mcp_settings["debug_mcp"] then
@@ -151,8 +161,11 @@ function init_simpleedit()
         if mcp_settings["simpleedit_timeout"] > 0 then
             timer.add(mcp_settings["simpleedit_timeout"] < 300 and mcp_settings["simpleedit_timeout"] or 300, 0, timeout_old_edits)
         end
+        blight.on_quit(clear_editor)
         alias.add("^/flush$", clear_editor)
+        alias.add("^/flush-all$", flush_all_editors)
         alias.add("^/editing$", show_currently_editing)
+        mud.on_disconnect(clear_editor)
         if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized MCP simpleedit" .. C_RESET)
         end
