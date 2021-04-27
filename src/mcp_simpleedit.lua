@@ -126,6 +126,19 @@ function clear_editor()
     end
 end
 
+-- Display a handy list of what is currently being edited.
+function show_currently_editing()
+    if next(currently_editing) == nil then
+        blight.output("There are no active editing sessions.")
+    else
+        for data_tag, data in pairs(currently_editing) do
+            if file_exists(data[2]) then
+                blight.output(data[5]:gsub("\\", "") .. " => " .. data[2])
+            end
+        end
+    end
+end
+
 function init_simpleedit()
     if simpleedit_trigger ~= nil then
         -- Probably a /reconnect. Forget what we know.
@@ -139,6 +152,7 @@ function init_simpleedit()
             timer.add(mcp_settings["simpleedit_timeout"] < 300 and mcp_settings["simpleedit_timeout"] or 300, 0, timeout_old_edits)
         end
         alias.add("^/flush$", clear_editor)
+        alias.add("^/editing$", show_currently_editing)
         if mcp_settings["debug_mcp"] then
             blight.output(C_BCYAN .. ">>> " .. C_GREEN .. "Initialized MCP simpleedit" .. C_RESET)
         end
