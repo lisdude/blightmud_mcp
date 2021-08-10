@@ -8,7 +8,7 @@ end
 -- so also generate a few random numbers to kick it into gear.
 function seed_rng()
     if not rng_seeded then
-        math.randomseed(os.clock() ^ 5)
+        math.randomseed(os.time())
         for i = 1, 10 do
             math.random(10000, 65000)
         end
