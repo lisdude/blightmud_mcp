@@ -89,7 +89,7 @@ function lambdamoo_simpleedit_begin(data)
     path = simpleedit_filename(mcp_settings["simpleedit_path"] .. sanitize_filename(data[2]))
     local handle = io.open(path, "w")
     if handle == nil then
-        blight.output(C_BCYAN .. ">>> " .. B_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
+        blight.output(C_BCYAN .. ">>> " .. BG_RED .. "Couldn't open file " .. path .. " for editing!" .. C_RESET)
     else
         currently_editing[path] = {0, name, command}
     end
