@@ -3,7 +3,6 @@ local function mcp_reset_defaults()
     local mcp_defaults = {
         simpleedit_path = plugin.dir("blightmud_mcp") .. "simpleedit/",
         edit_command = "vim -c \"set syntax=moo\" %FILE",
-        stat_command = "stat",
         simpleedit_timeout = 10800,
         lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*",
         debug_mcp = false

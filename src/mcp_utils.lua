@@ -4,6 +4,21 @@ else
     gag = {gag=true, skip_log=true}  -- Default mud.send options.
 end
 
+-- The macOS stat command works differently from the rest of the world.
+-- So we figure out which command to use here.
+local stat_command
+
+local function determine_stat_command()
+    local uname = io.popen("uname"):read()
+    if uname == "Darwin" then
+        stat_command = '/usr/bin/stat -f %m '
+    else
+        stat_command = 'stat -c %Y '
+    end
+end
+
+determine_stat_command()
+
 -- Seed the random number generator. Lua seems to be weird about this,
 -- so also generate a few random numbers to kick it into gear.
 function seed_rng()
@@ -43,9 +58,10 @@ end
 
 -- Return a file's last modification time
 function last_modified(file)
-    local f = io.popen(mcp_settings["stat_command"] .. " -c %Y \"" .. file .. "\"")
+    local f = io.popen(stat_command .. '"' .. file .. '"')
     local last_mod = f:read()
     f:close()
+
     if last_mod == nil then
         blight.output(C_BCYAN .. ">>> " .. C_RED .. "Couldn't get last modified date for " .. file .. C_RESET)
         return nil

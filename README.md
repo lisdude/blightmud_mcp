@@ -16,8 +16,6 @@ Within Blightmud:
 1. `/add_plugin https://github.com/lisdude/blightmud_mcp`
 2. `/enable_plugin blightmud_mcp`
 
-**NOTE**: macOS users will need to change the `stat_command` option in main.lua. See [Configuration](#configuration) below.
-
 ## Commands
 | Command  | Effect                                                                                                                                                                     |
 | ---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -35,7 +33,6 @@ While not necessary to get going (unless you use macOS...), you can customize so
 | simpleedit_path          | The path where editor files are created.                                                                                           |
 | simpleedit_timeout       | The amount of time, in seconds, to wait after editing a file before it's considered abandoned and deleted. 0 disables the timeout. |
 | edit_command             | The command executed to launch your editor.                                                                                        |
-| stat_command             | Your 'stat' command. macOS users should use the Homebrew `gstat` command.                                                          |
 | lambdamoo_connect_string | The string used to identify a MOO and initialize the LambdaMOO local edit protocol. (Only applies to MOOs without MCP 2.1.)        |
 | debug_mcp                | Don't hide out-of-band MCP communication. Show additional debugging messages.                                                      |
 
