@@ -78,8 +78,14 @@ function simpleedit_end(data)
     edit_data[1]:close()
     currently_editing[data[2]][3] = last_modified(edit_data[2])
     currently_editing[data[2]][1] = nil
-    local edit_cmd = mcp_settings["edit_command"]:gsub("%%FILE", edit_data[2])
-    edit_cmd = edit_cmd:gsub("%%NAME", edit_data[5])
+
+    local edit_cmd = mcp_settings["edit_command"]
+    local file_path = edit_data[2]
+    local edit_name = edit_data[5]
+
+    edit_cmd = edit_cmd:gsub("%%FILE", file_path)
+    edit_cmd = edit_cmd:gsub("%%NAME", edit_name)
+
     os.execute(edit_cmd)
 end
 

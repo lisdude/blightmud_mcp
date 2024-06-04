@@ -1,8 +1,20 @@
+-- Helper functions to make sure edit_command substitutions are properly quoted.
+local function is_quoted_placeholder(cmd, placeholder)
+    return cmd:match('%"' .. placeholder .. '%"') or cmd:match("%'" .. placeholder .. "%'")
+end
+
+local function ensure_quoted_placeholder(cmd, placeholder)
+    if not is_quoted_placeholder(cmd, placeholder) then
+        cmd = cmd:gsub(placeholder, '"' .. placeholder .. '"')
+    end
+    return cmd
+end
+
 -- Restore default settings and save them to disk.
 local function mcp_reset_defaults()
     local mcp_defaults = {
-        simpleedit_path = plugin.dir("blightmud_mcp") .. "simpleedit/",
-        edit_command = "vim -c \"set syntax=moo\" %FILE",
+        simpleedit_path = plugin.dir("blightmud_mcp") .. "/simpleedit/",
+        edit_command = "vim -c \"set syntax=moo\" \"%FILE\"",
         simpleedit_timeout = 10800,
         lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*",
         debug_mcp = false
@@ -13,6 +25,9 @@ end
 -- Read settings from disk.
 function mcp_read_settings()
     mcp_settings = json.decode(store.disk_read("mcp_settings"))
+
+    mcp_settings["edit_command"] = ensure_quoted_placeholder(mcp_settings["edit_command"], "%%FILE")
+    mcp_settings["edit_command"] = ensure_quoted_placeholder(mcp_settings["edit_command"], "%%NAME")
 end
 
 -- Display MCP settings.
@@ -45,6 +60,9 @@ function mcp_change_setting(args)
             args[3] = tonumber(args[3])
         elseif args[2] == "debug_mcp" then
             args[3] = args[3] == "true" and true or false
+        elseif args[2] == "edit_command" then
+            args[3] = ensure_quoted_placeholder(args[3], "%%FILE")
+            args[3] = ensure_quoted_placeholder(args[3], "%%NAME")
         end
         mcp_settings[args[2]] = args[3]
         store.disk_write("mcp_settings", json.encode(mcp_settings))
