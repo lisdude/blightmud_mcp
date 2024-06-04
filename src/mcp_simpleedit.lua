@@ -3,7 +3,7 @@
 --
 -- Author: lisdude <lisdude@lisdude.com>
 --
-local edit_begin_regex = "^#\\$#dns-org-mud-moo-simpleedit-content (\\d{20}) reference: (\".+\") name: (\"?.*\"?) type: (.+) content\\*: (\".*\") _data-tag: (.+)$"
+local edit_begin_regex = "^#\\$#dns-org-mud-moo-simpleedit-content (\\d{20}) reference: (\"?.+\"?) name: (\"?.*\"?) type: (.+) content\\*: (\".*\") _data-tag: (.+)$"
 local edit_content_regex = "^#\\$#\\* (.+) content:[ ]?(.*)$"
 local edit_end_regex = "^#\\$#: (.+)$"
 
