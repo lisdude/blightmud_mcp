@@ -26,7 +26,7 @@ Within Blightmud:
 | /editing              | Display a list of files currently open for editing. |
 
 ## Configuration
-While not necessary to get going (unless you use macOS...), you can customize some settings using the `/mcp` command. When supplied with no arguments, it will print your current settings. When provided with a single argument (e.g. `/mcp simpleedit_timeout`) it will print the current value of that setting. When provided when two arguments, it will change the setting (e.g. `/mcp simpleedit_timeout 0`).
+While not necessary to get going, you can customize some settings using the `/mcp` command. When supplied with no arguments, it will print your current settings. When provided with a single argument (e.g. `/mcp simpleedit_timeout`) it will print the current value of that setting. When provided when two arguments, it will change the setting (e.g. `/mcp simpleedit_timeout 0`).
 
 | Setting                  | Effect                                                                                                                             |
 | -------------------------|------------------------------------------------------------------------------------------------------------------------------------|
@@ -36,7 +36,7 @@ While not necessary to get going (unless you use macOS...), you can customize so
 | lambdamoo_connect_string | The string used to identify a MOO and initialize the LambdaMOO local edit protocol. (Only applies to MOOs without MCP 2.1.)        |
 | debug_mcp                | Don't hide out-of-band MCP communication. Show additional debugging messages.                                                      |
 
-**Note**: Some setting require reloading the plugin before they take effect.
+**Note**: Changing `debug_mcp`, `simpleedit_timeout`, or `lambdamoo_connect_string` requires reloading the plugin before the change will take effect.
 
 ### Edit Command Substitions
 The `edit_command` variable accepts these substitutions:
