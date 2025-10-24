@@ -57,7 +57,7 @@ function timeout_old_edits()
             currently_editing[data_tag] = nil
         elseif data[3] ~=0 and (current_time - last_modified) >= mcp_settings["simpleedit_timeout"] then
 --            data[1]:close()
-            os.execute("rm \"" .. data[2] .. "\"")
+            os.exec({"rm", data[2]})
             if mcp_settings["debug_mcp"] then
                 blight.output(C_BCYAN .. ">>> " .. C_YELLOW .. "Simpleedit deleted editor file " .. data[2] .. C_RESET)
             end
@@ -82,11 +82,7 @@ function simpleedit_end(data)
     local edit_cmd = mcp_settings["edit_command"]
     local file_path = edit_data[2]
     local edit_name = edit_data[5]
-
-    edit_cmd = edit_cmd:gsub("%%FILE", file_path)
-    edit_cmd = edit_cmd:gsub("%%NAME", edit_name)
-
-    os.execute(edit_cmd)
+    mcp_edit_file(edit_name, file_path)
 end
 
 -- As MCP data is received, write it to the file we want to edit.
@@ -127,7 +123,7 @@ end
 function clear_editor()
     for data_tag, data in pairs(currently_editing) do
         if file_exists(data[2]) then
-            os.execute("rm \"" .. data[2] .. "\"")
+            core.exec({"rm", data[2]})
             currently_editing[data_tag] = nil
         end
     end

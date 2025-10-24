@@ -1,20 +1,8 @@
--- Helper functions to make sure edit_command substitutions are properly quoted.
-local function is_quoted_placeholder(cmd, placeholder)
-    return cmd:match('%"' .. placeholder .. '%"') or cmd:match("%'" .. placeholder .. "%'")
-end
-
-local function ensure_quoted_placeholder(cmd, placeholder)
-    if not is_quoted_placeholder(cmd, placeholder) then
-        cmd = cmd:gsub(placeholder, '"' .. placeholder .. '"')
-    end
-    return cmd
-end
-
 -- Restore default settings and save them to disk.
 local function mcp_reset_defaults()
     local mcp_defaults = {
         simpleedit_path = plugin.dir("blightmud_mcp") .. "/simpleedit/",
-        edit_command = "vim -c \"set syntax=moo\" \"%FILE\"",
+        edit_command = {"vim", "-c", "set syntax=moo", "%FILE"},
         simpleedit_timeout = 10800,
         lambdamoo_connect_string = "\\*\\*\\* Connected \\*\\*\\*",
         debug_mcp = false
@@ -25,16 +13,17 @@ end
 -- Read settings from disk.
 function mcp_read_settings()
     mcp_settings = json.decode(store.disk_read("mcp_settings"))
+end
 
-    mcp_settings["edit_command"] = ensure_quoted_placeholder(mcp_settings["edit_command"], "%%FILE")
-    mcp_settings["edit_command"] = ensure_quoted_placeholder(mcp_settings["edit_command"], "%%NAME")
+local function format_value(v)
+    return type(v) == "table" and json.encode(v) or tostring(v)
 end
 
 -- Display MCP settings.
 function mcp_display_settings(args)
     if #args == 1 then
         for key, value in pairs(mcp_settings) do
-            blight.output("[mcp] " .. C_YELLOW .. key .. C_RESET .. " => " .. tostring(value))
+            blight.output("[mcp] " .. C_YELLOW .. key .. C_RESET .. " => " .. format_value(value))
         end
         blight.output("\nUse '/mcp defaults' to reset settings to defaults.")
     elseif args[2] == "defaults" then
@@ -45,7 +34,7 @@ function mcp_display_settings(args)
         if mcp_settings[args[2]] == nil then
             blight.output("[mcp] " .. C_RED .. " Setting doesn't exist " .. C_RESET)
         else
-            blight.output("[mcp] " .. C_YELLOW .. args[2] .. C_RESET .. " => " .. tostring(mcp_settings[args[2]]))
+            blight.output("[mcp] " .. C_YELLOW .. args[2] .. C_RESET .. " => " .. format_value(mcp_settings[args[2]]))
         end
     end
 end
@@ -61,12 +50,11 @@ function mcp_change_setting(args)
         elseif args[2] == "debug_mcp" then
             args[3] = args[3] == "true" and true or false
         elseif args[2] == "edit_command" then
-            args[3] = ensure_quoted_placeholder(args[3], "%%FILE")
-            args[3] = ensure_quoted_placeholder(args[3], "%%NAME")
+            args[3] = json.decode(args[3])
         end
         mcp_settings[args[2]] = args[3]
         store.disk_write("mcp_settings", json.encode(mcp_settings))
-        blight.output("[mcp] " .. C_YELLOW .. args[2] .. C_RESET .. " => " .. tostring(mcp_settings[args[2]]))
+        blight.output("[mcp] " .. C_YELLOW .. args[2] .. C_RESET .. " => " .. format_value(mcp_settings[args[2]]))
         if args[2] == "debug_mcp" or args[2] == "simpleedit_timeout" or args[2] == "lambdamoo_connect_string" then
             blight.output("[mcp] " .. C_CYAN .. "***" .. C_RESET .. " Changing this setting requires reloading the MCP plugin. " .. C_CYAN .. "***" .. C_RESET)
         end
