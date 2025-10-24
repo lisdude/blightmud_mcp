@@ -115,6 +115,16 @@ function print_table(o)
    end
 end
 
+function mcp_edit_file(name, path)
+    local args = {}
+    for _, arg in ipairs(mcp_settings["edit_command"]) do
+        arg = arg:gsub("%%NAME", name):gsub("%%FILE", path)
+        table.insert(args, arg)
+    end
+    core.exec(args)
+end
+
+
 -- Delete all of the *.moo files in the simpleedit path.
 function delete_editor_files()
     os.execute("rm -f \"" .. mcp_settings["simpleedit_path"] .. "\"*.moo")
