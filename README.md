@@ -48,5 +48,5 @@ The `edit_command` variable accepts these substitutions:
 For example, if you're using tmux and want to open an editor in a new tmux window, you could do something like:
 
 ```bash
-edit_command = "tmux new-window -n \"%NAME\" vim -c \"set syntax=moo\" \"%FILE\""
+edit_command = ["tmux", "new-window", "-n", "%NAME", "vim", "-c", "set syntax=moo", "%FILE"]
 ```
