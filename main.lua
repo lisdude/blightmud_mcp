@@ -6,7 +6,7 @@
 --
 
 --- Requirements
-require("src/settings")             -- settings
+require("src/mcp_settings")         -- settings
 require("src/mcp_utils")            -- useful utility functions
 require("src/mcp_negotiate")        -- mcp-negotiate package
 require("src/mcp_client")           -- dns-com-vmoo-client package
